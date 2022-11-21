@@ -107,4 +107,9 @@
         transform: translateY(0);
     }
 
+    @media only screen and (max-width: 500px) {
+        div {
+            width: 90vw;
+        }
+    } 
 </style>

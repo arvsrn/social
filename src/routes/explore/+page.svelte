@@ -133,4 +133,10 @@
 
         margin-bottom: 12px;
     }
+
+    @media only screen and (max-width: 500px) {
+        div.controls {
+            width: 90vw;
+        }
+    }
 </style>

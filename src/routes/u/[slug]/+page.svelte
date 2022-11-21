@@ -230,4 +230,10 @@
 
         color: #52A9FF;
     }
+
+    @media only screen and (max-width: 500px) {
+        div.profile-outer, div.posts, placeholder, div.divider {
+            width: 90vw;
+        }
+    }
 </style>

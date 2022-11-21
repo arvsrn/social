@@ -1,9 +1,9 @@
 <script lang="ts">
-    import Blanket from "../Blanket.svelte";
-    import Navigation from "../Navigation.svelte";
     import Newpost from "../Newpost.svelte";
     import Signup from "../Popover/Signup.svelte";
     import Post from "../Post.svelte";
+    
+    import { state } from '../../app';
 
     let active: 'for-you' | 'following' | 'all' = 'for-you';
     let newpost: boolean = false;
@@ -24,7 +24,12 @@
         <Newpost bind:show={newpost}></Newpost>
     {/if}
 
-    <Post></Post>
+    <Post user={{
+        username: 'Paco Coursey',
+        handle: 'paco',
+        about: 'Crafting interfaces @linear',
+        avatar: "https://pbs.twimg.com/profile_images/1533237900539793408/S1XNsAKe_400x400.jpg",
+    }} content="something something balalalal"></Post>
 </main>
 
 <style>
@@ -127,5 +132,11 @@
         height: 32px;
 
         margin-bottom: 12px;
+    }
+
+    @media only screen and (max-width: 500px) {
+        div.controls {
+            width: 90vw;
+        }
     }
 </style>

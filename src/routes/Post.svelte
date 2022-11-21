@@ -186,4 +186,10 @@
         top: 10px;
         right: 10px;
     }
+
+    @media only screen and (max-width: 500px) {
+        main {
+            width: 90vw;
+        }
+    }
 </style>

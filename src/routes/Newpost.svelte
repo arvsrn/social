@@ -158,4 +158,10 @@
 
         padding: 0px 8px;
     }
+
+    @media only screen and (max-width: 500px) {
+        main {
+            width: 90vw;
+        }
+    }
 </style>

@@ -4,6 +4,7 @@
     import { app } from "../../../server";
     import Loader from "../../Loader.svelte";
     import { page } from "$app/stores";
+    import { state } from "../../../app";
 
     const db = getFirestore(app);
     const userDoc = doc(db, `users/${$page.params.slug}`);
@@ -24,6 +25,10 @@
 
                 <placeholder style="width: 75px; height: 37px; margin-left: auto;"/> 
             </div>
+            
+            <div class="divider"></div>
+            <placeholder></placeholder>
+            <placeholder></placeholder>
         </div>
     {:then docSnap}
         {#if docSnap.exists()}
@@ -60,6 +65,10 @@
             <div class="profile-outer" style="gap: 4px;">
                 <h1 style="color: white">Profile not found.</h1>
                 <p>Nobody is named "{$page.params.slug}" on this platform.</p>
+                
+                {#if !$state.user}
+                    <a href="/signup">Wanna be {$page.params.slug}?</a>
+                {/if}
             </div>
         {/if}
     {/await}
@@ -223,17 +232,41 @@
         }
     }
 
-    a.link {
-        font-size: inherit;
-        font-family: inherit;
-        font-weight: inherit;
+    a  {
+        font-family: Inter, sans-serif;
+        margin-top: 8px;
+        
+        font-size: 14.5px;
+        font-weight: normal;
 
-        color: #52A9FF;
+        padding-bottom: 1px;
+        color: white;
+        position: relative;
+
+        width: fit-content;
+    }
+
+    a::after {
+        content: '';
+        position: absolute;
+        height: 1px;
+        width: 100%;
+        left: 0;
+        bottom: 0;
+        opacity: 0;
+        transform: translateY(3px);
+        background: white;
+        transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    a:hover::after {
+        opacity: 1;
+        transform: translateY(0);
     }
 
     @media only screen and (max-width: 500px) {
         div.profile-outer, div.posts, placeholder, div.divider {
-            width: 90vw;
+            width: 90vw !important;
         }
     }
 </style>

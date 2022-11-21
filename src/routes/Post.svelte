@@ -13,7 +13,7 @@
 </script>
 
 <main on:click={() => showInput = true} on:keydown={() => {}} use:clickOutside={() => showInput = false}>
-    <div class="profile-container" on:keydown={() => {}} >
+    <div class="profile-container" on:keydown={() => {}}>
         <img on:click={() => {window.location.assign(`/u/${user.handle}`)}} src="{user.avatar}" alt="" on:mouseenter={() => hover = true} on:mouseleave={() => hover = false}>
         <p class="name">{user.username}</p>
         <p class="tag">@{user.handle}</p>

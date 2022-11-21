@@ -2,11 +2,16 @@
     import Newpost from "../Newpost.svelte";
     import Signup from "../Popover/Signup.svelte";
     import Post from "../Post.svelte";
-    
+
+    import { doc, getDocs, getDoc, getFirestore, collection } from "firebase/firestore";
+    import { app } from "../../server";
+    import Loader from "../Loader.svelte";
     import { state } from '../../app';
 
     let active: 'for-you' | 'following' | 'all' = 'for-you';
     let newpost: boolean = false;
+
+    const db = getFirestore(app);
 </script>
 
 <main>
@@ -24,12 +29,28 @@
         <Newpost bind:show={newpost}></Newpost>
     {/if}
 
-    <Post user={{
-        username: 'Paco Coursey',
-        handle: 'paco',
-        about: 'Crafting interfaces @linear',
-        avatar: "https://pbs.twimg.com/profile_images/1533237900539793408/S1XNsAKe_400x400.jpg",
-    }} content="something something balalalal"></Post>
+    {#await getDocs(collection(db, "posts/"))}
+        <Loader></Loader>
+    {:then posts}
+        {#each posts.docs as user}
+            {#each user.data().posts as post_}
+                {#await getDoc(doc(db, `users/${user.id}`))}
+
+                {:then user}
+                    {#if user.exists()}
+                        <Post user={{
+                            username: user.data().username,
+                            handle: user.data().handle,
+                            about: user.data().about,
+                            avatar: user.data().avatar,
+                        }} content="{post_.content}"></Post>
+                    {:else}
+                        Error
+                    {/if}
+                {/await}
+            {/each}
+        {/each}
+    {/await}
 </main>
 
 <style>

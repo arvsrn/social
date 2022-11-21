@@ -80,7 +80,6 @@
         gap: 4px;
     }
 
-
     a  {
         padding-bottom: 1px;
         color: white;

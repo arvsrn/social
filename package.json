@@ -21,6 +21,8 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"firebase": "^9.14.0",
+		"svelte-local-storage-store": "^0.3.1",
 		"svelte-use-click-outside": "^1.0.0"
 	}
 }

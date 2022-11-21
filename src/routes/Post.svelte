@@ -1,19 +1,34 @@
 <script lang="ts">
+    import type { User } from 'src/app';
     import { clickOutside } from 'svelte-use-click-outside';
-    
+    import { fade } from 'svelte/transition';
+
     let active: boolean = false;
     let showInput: boolean = false;
     let input: HTMLInputElement;
+    let hover: boolean = false;
+
+    export let user: User;
+    export let content: string;
 </script>
 
 <main on:click={() => showInput = true} on:keydown={() => {}} use:clickOutside={() => showInput = false}>
-    <div class="profile-container">
-        <img src="https://pbs.twimg.com/profile_images/1588568640718258178/CVpt710y_400x400.jpg" alt="">
-        <p class="name">Paco Coursey</p>
-        <p class="tag">@paco</p>
+    <div class="profile-container" on:keydown={() => {}} >
+        <img on:click={() => {window.location.assign(`/u/${user.handle}`)}} src="{user.avatar}" alt="" on:mouseenter={() => hover = true} on:mouseleave={() => hover = false}>
+        <p class="name">{user.username}</p>
+        <p class="tag">@{user.handle}</p>
+
+        {#if hover}
+            <div transition:fade={{ duration: 100 }} on:mouseenter={() => hover = true} on:mouseleave={() => hover = false}>
+                <img src="{user.avatar}" alt="">
+                <p class="name">{user.username}</p>
+                <p class="tag">@{user.handle}</p>
+                <p class="about">{user.about}</p>
+            </div>
+        {/if}
     </div>
 
-    <p class="text">The next wave of website design will be built with mask, clip-path, shape-outside, and filter.</p>
+    <p class="text">{content}</p>
 
     <!-- class:active={input.value.trim() !== ""} -->
 
@@ -42,12 +57,37 @@
         width: 480px;
         height: fit-content;
 
-        background: #282828;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: var(--dark);
+        border: 1px solid var(--d08);
         border-radius: 8px;
 
         cursor: pointer;
         transition: height 0.15s ease-in-out;
+    }
+
+    div.profile-container > div {
+        position: absolute;
+        
+        width: 250px;
+        height: fit-content;
+
+        border-radius: 6px;
+        background-color: var(--dark);
+        border: 1px solid var(--darkest);
+        box-shadow: 0px 4px 12px -4px rgba(22, 34, 51, 0.12), 0px 16px 32px rgba(22, 34, 51, 0.16);
+
+        top: 20px;
+        left: -4px;
+        padding: 12px;
+
+        z-index: 1000;
+    }
+
+    div.profile-container > div > img {
+        width: 50px;
+        height: 50px;
+
+        border-radius: 25px;
     }
 
     div.profile-container {
@@ -59,25 +99,34 @@
 
         width: 100%;
         height: 17px;
+
+        position: relative;
     }
 
     p.name {
         font-weight: 700;
-        color: rgba(255, 255, 255, 0.8);
+        color: var(--d8);
     }
 
     p.tag {
-        color: rgba(255, 255, 255, 0.5);
+        color: var(--d5);
+    }
+
+    p.about {
+        color: var(--d8);
+        font-size: 13px;
+
+        margin-top: 8px; 
     }
 
     p {
-        font-family: 'Inter';
+        font-family: Inter, sans-serif;
         font-style: normal;
         font-weight: 400;
         font-size: 14px;
         line-height: 17px;
 
-        color: rgba(255, 255, 255, 0.8);
+        color: var(--d8);
     }
 
     p.text {
@@ -97,13 +146,13 @@
         width: 100%;
         height: 35px;
 
-        background: rgba(255, 255, 255, 0.05);
+        background: var(--d05);
         border-radius: 6px;
 
         position: relative;
 
-        color: rgba(255, 255, 255, 0.5);
-        transition: color 0.1   s ease-in;
+        color: var(--d5);
+        transition: color 0.1s ease-in;
     }
 
     input {
@@ -112,24 +161,24 @@
         height: 100%;
         width: 100%;
 
-        color: white;
+        color: var(--light);
         background: transparent;
 
-        font-family: 'Inter';
+        font-family: Inter, sans-serif;
         font-style: normal;
         font-weight: 400;
-        font-size: 12px;
+        font-size: 12.45px;
         line-height: 15px;
 
         padding-left: 10px;
     }
 
     input::placeholder {
-        color: rgba(255, 255, 255, 0.5);
+        color: var(--d5);
     }
     
     div.active {
-        color: white;
+        color: var(--light);
     }
 
     svg {

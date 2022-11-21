@@ -7,7 +7,10 @@
 		<meta name="viewport" content="width=device-width" />
 		%sveltekit.head%
 	</head>
-	<body>
+	<body class>
 		%sveltekit.body%
+		<script>
+			document.body.classList = [JSON.parse(window.localStorage.getItem('state')).darkmode ? 'dark' : 'light'];
+		</script>
 	</body>
 </html>

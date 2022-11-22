@@ -4,6 +4,7 @@
     margin: 0px;
     padding: 0px;
     box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
 }
 
 :root {
@@ -33,9 +34,9 @@
 
 .light {
     --light: black;
-    --dark: #DBDBDB;
-    --darker: #E2E2E2;
-    --darkest: #F8F8F8;
+    --dark: #e5e5e5;
+    --darker: #eeee;
+    --darkest: #fefefe;
     --d01: rgba(0, 0, 0, 0.01);
     --d04: rgba(0, 0, 0, 0.04);
     --d05: rgba(0, 0, 0, 0.05);
@@ -71,4 +72,8 @@ button {
 
 a {
     text-decoration: none;
+}
+
+::selection {
+    background-color: var(--d08);
 }

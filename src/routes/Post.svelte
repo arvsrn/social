@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { User } from 'src/app';
     import { clickOutside } from 'svelte-use-click-outside';
-    import { fade } from 'svelte/transition';
+    import { fade, slide } from 'svelte/transition';
 
     let active: boolean = false;
     let showInput: boolean = false;
@@ -13,8 +13,8 @@
 </script>
 
 <main on:click={() => showInput = true} on:keydown={() => {}} use:clickOutside={() => showInput = false}>
-    <div class="profile-container" on:keydown={() => {}}>
-        <img on:click={() => {window.location.assign(`/u/${user.handle}`)}} src="{user.avatar}" alt="" on:mouseenter={() => hover = true} on:mouseleave={() => hover = false}>
+    <div class="profile-container">
+        <img src="{user.avatar}" on:keydown={() => {}} on:click={() => {window.location.assign(`/u/${user.handle}`)}}    alt="" on:mouseenter={() => hover = true} on:mouseleave={() => hover = false}>
         <p class="name">{user.username}</p>
         <p class="tag">@{user.handle}</p>
 
@@ -33,7 +33,7 @@
     <!-- class:active={input.value.trim() !== ""} -->
 
     {#if showInput}
-        <div class="send-private-reply-container" class:active={active}>
+        <div class="send-private-reply-container" class:active={active} transition:slide={{ duration: 70 }}>
             <input type="text" placeholder="Send a private reply..." bind:this={input} on:input={key => {
                 console.log(input.value);
                 active = input.value.trim() !== "";

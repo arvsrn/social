@@ -16,7 +16,7 @@
 <main>
     {#await getDoc(userDoc)}
         <div class="profile-outer">
-            <placeholder style="width: 100px; height: 100px; border-radius: 80px;"/>
+            <placeholder style="width: 100px !important; height: 100px; border-radius: 80px;"/>
             <div class="profile-inner">
                 <div class="profile-info">
                     <placeholder style="width: 150px; height: 19px;"/>

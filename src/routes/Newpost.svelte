@@ -51,7 +51,7 @@
 
     textarea {
         font-family: Inter, sans-serif;
-        font-size: 16px;
+        font-size: 14.75px;
         font-weight: normal;
 
         color: var(--d8);

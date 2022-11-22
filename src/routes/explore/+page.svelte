@@ -8,7 +8,7 @@
     import Loader from "../Loader.svelte";
     import { state } from '../../app';
 
-    let active: 'for-you' | 'following' | 'all' = 'for-you';
+    let active: 'for-you' | 'following' = 'for-you';
     let newpost: boolean = false;
 
     const db = getFirestore(app);
@@ -19,7 +19,6 @@
         <div class="tabs">
             <button class:active={active == "for-you"} on:click={() => active = "for-you"} class="tab">For you</button>
             <button class:active={active == "following"} on:click={() => active = "following"} class="tab">Following</button>
-            <button class:active={active == "all"} on:click={() => active = "all"} class="tab">All</button>
         </div>
 
         <button class="post" on:click={() => newpost = true}>New post</button>

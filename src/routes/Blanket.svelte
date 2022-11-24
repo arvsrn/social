@@ -1,8 +1,9 @@
 <script lang="ts">
     export let toggle: boolean;
+    export let style: string = "";
 </script>
 
-<main on:click|self={() => toggle = false}>
+<main on:click|self={() => toggle = false} on:keydown={() => { /* to get a11y to shut up */ }} {style}>
     <slot></slot>
 </main>
 

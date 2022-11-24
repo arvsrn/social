@@ -14,14 +14,12 @@
 
 <main on:click={() => showInput = true} on:keydown={() => {}} use:clickOutside={() => showInput = false}>
     <div class="profile-container">
-        <img src="{user.avatar}" on:keydown={() => {}} on:click={() => {window.location.assign(`/u/${user.handle}`)}}    alt="" on:mouseenter={() => hover = true} on:mouseleave={() => hover = false}>
-        <p class="name">{user.username}</p>
-        <p class="tag">@{user.handle}</p>
+        <p class="name" on:keydown={() => {}} on:click={() => {window.location.assign(`/u/${user.handle}`)}} on:mouseenter={() => hover = true} on:mouseleave={() => hover = false}>{user.username}</p>
 
         {#if hover}
             <div transition:fade={{ duration: 100 }} on:mouseenter={() => hover = true} on:mouseleave={() => hover = false}>
                 <img src="{user.avatar}" alt="">
-                <p class="name">{user.username}</p>
+                <p class="name-hvr">{user.username}</p>
                 <p class="tag">@{user.handle}</p>
                 <p class="about">{user.about}</p>
             </div>
@@ -52,7 +50,7 @@
         flex-direction: column;
         align-items: flex-start;
         padding: 16px;
-        gap: 16px;
+        gap: 4px;
 
         width: 480px;
         height: fit-content;
@@ -80,6 +78,10 @@
         left: -4px;
         padding: 12px;
 
+        display: flex;
+        flex-direction: column;
+        gap: 0px;
+
         z-index: 1000;
     }
 
@@ -88,6 +90,7 @@
         height: 50px;
 
         border-radius: 25px;
+        margin-bottom: 12px;
     }
 
     div.profile-container {
@@ -104,8 +107,18 @@
     }
 
     p.name {
+        font-size: 12.5px;
+        font-weight: normal;
+        color: var(--d6);
+    }
+
+    p.name-hvr {
         font-weight: 700;
         color: var(--d8);
+    }
+
+    p.name:hover {
+        text-decoration: underline;
     }
 
     p.tag {
@@ -116,7 +129,7 @@
         color: var(--d8);
         font-size: 13px;
 
-        margin-top: 8px; 
+        margin-top: 12px; 
     }
 
     p {
@@ -133,13 +146,6 @@
         width: 100%;
         height: fit-content;
         word-wrap: break-word;
-    }
-
-    img {
-        width: 28px;
-        height: 28px;
-
-        border-radius: 14px;
     }
 
     div.send-private-reply-container {

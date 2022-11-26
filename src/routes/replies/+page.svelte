@@ -19,6 +19,10 @@
     let opponentI: number = 0;
     let current_opponent: DocumentData | null = null;
     let current_chat: Array<any> = [];
+    
+    getDocs(chats_query).then(current => {
+        current_opponent = current;
+    });
 </script>
 
 <main>
@@ -32,6 +36,7 @@
                 <placeholder style="width: 100%; height: 64px; margin-bottom: 4px;"/>
             {:then chats}
                 {#each chats.docs as chat, i}
+
                     {#await getDocs(query(users, where("tag", "==", chat.data().between[1])))}
                         <placeholder style="width: 100%; height: 64px; margin-bottom: 4px;"/>
                     {:then user}

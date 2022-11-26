@@ -44,8 +44,8 @@
                             </p>
                         </div>
                     {/if}
-                    {#each message.content as message} 
-                        <p>{message}</p>
+                    {#each message.content as msg} 
+                        <p>{msg}</p>
                     {/each}
                 </div>
             </main>

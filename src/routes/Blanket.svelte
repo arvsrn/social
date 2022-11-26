@@ -12,7 +12,7 @@
         width: 100vw;
         height: 100vh;
 
-        background: rgba(0, 0, 0, 0.2);
+        background: rgba(0, 0, 0, 0.35);
         z-index: 100;
 
         display: flex;

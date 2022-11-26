@@ -1,20 +1,19 @@
 <script lang="ts">
     import Post from "../../Post.svelte";
-    import { doc, getDoc, getFirestore } from "firebase/firestore";
-    import { app } from "../../../server";
-    import Loader from "../../Loader.svelte";
+    import { doc, getDoc, getDocs } from "firebase/firestore";
+    import { db } from "../../../server";
     import { page } from "$app/stores";
     import { state } from "../../../app";
+    import { collection, query, where } from "firebase/firestore";
 
-    const db = getFirestore(app);
-    const userDoc = doc(db, `users/${$page.params.slug}`);
-    const postsDoc = doc(db, `posts/${$page.params.slug}`);
+    const users = collection(db, "users");
+    const users_query = query(users, where("tag", "==", $page.params.slug));
 
     let following: boolean = false;
 </script>
 
 <main>
-    {#await getDoc(userDoc)}
+    {#await getDocs(users_query)}
         <div class="profile-outer">
             <placeholder style="width: 100px !important; height: 100px; border-radius: 80px;"/>
             <div class="profile-inner">
@@ -31,13 +30,13 @@
             <placeholder></placeholder>
         </div>
     {:then docSnap}
-        {#if docSnap.exists()}
+        {#if docSnap.docs[0]}
             <div class="profile-outer">
-                <img src="{docSnap.data().avatar}" alt="">
+                <img src="{docSnap.docs[0].data().avatar}" alt="">
                 <div class="profile-inner">
                     <div class="profile-info">
-                        <h1>{docSnap.data().username} <span>@{docSnap.data().handle}</span></h1>
-                        <p>{docSnap.data().about}</p>
+                        <h1>{docSnap.docs[0].data().username} <span>@{docSnap.docs[0].data().tag}</span></h1>
+                        <p>{docSnap.docs[0].data().about}</p>
                     </div>
 
                     <button class="follow" class:following={following} on:click={() => following = !following}>{following ? 'Following' : 'Follow'}</button>
@@ -47,19 +46,20 @@
             <div class="divider"></div>
 
             <div class="posts">
-                {#await getDoc(postsDoc)}
-                    <placeholder></placeholder>
-                    <placeholder></placeholder>
-                {:then posts}
-                    {#each (posts.data() || { posts: [] }).posts as post} 
+                {#each docSnap.docs[0].data().posts as postId} 
+                    {#await getDoc(doc(db, "posts", postId))}
+                        <placeholder></placeholder>
+                    {:then post}
+                        {#if post.exists()}
                         <Post user={{
-                            avatar: docSnap.data().avatar,
-                            username: docSnap.data().username,
-                            about: docSnap.data().about,
-                            handle: docSnap.data().handle,
-                        }} content={post.content}></Post>
-                    {/each}
-                {/await}
+                            avatar: docSnap.docs[0].data().avatar,
+                            username: docSnap.docs[0].data().username,
+                            about: docSnap.docs[0].data().about,
+                            handle: docSnap.docs[0].data().tag,
+                        }} content={post.data().content}></Post>
+                        {/if}
+                    {/await}
+                {/each}
             </div>
         {:else}
             <div class="profile-outer" style="gap: 4px;">

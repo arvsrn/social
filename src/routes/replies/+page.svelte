@@ -4,6 +4,19 @@
     import { fade } from "svelte/transition";
 
     let expand: boolean = false;
+
+    import { getDocs, type DocumentData } from "firebase/firestore";
+    import { db } from "../../server";
+    import { collection, query, where } from "firebase/firestore";
+
+    const messages = collection(db, "messages");
+    const chats_query = query(messages, where("between", "array-contains", "arvsrn"));
+
+    const users = collection(db, "users");
+
+    let opponentI: number = 0;
+    let current_opponent: DocumentData | null = null;
+    let current_chat: Array<any> = [];
 </script>
 
 <main>
@@ -12,29 +25,34 @@
             <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.85355 3.14645C7.04882 3.34171 7.04882 3.65829 6.85355 3.85355L3.70711 7H12.5C12.7761 7 13 7.22386 13 7.5C13 7.77614 12.7761 8 12.5 8H3.70711L6.85355 11.1464C7.04882 11.3417 7.04882 11.6583 6.85355 11.8536C6.65829 12.0488 6.34171 12.0488 6.14645 11.8536L2.14645 7.85355C1.95118 7.65829 1.95118 7.34171 2.14645 7.14645L6.14645 3.14645C6.34171 2.95118 6.65829 2.95118 6.85355 3.14645Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
         </button>
 
-        <div class="chat">
-            <img src="https://pbs.twimg.com/profile_images/1532551445396037639/eoGesqdh_400x400.jpg" class="user-pfp" alt="pfp">
-            <div class="text">
-                <div class="name-container">
-                    <p>Paco Coursey</p>
-                    <p class="last">1d</p>
-                </div>
-                <span>Hi Paco!</span>
-            </div>
-        </div>
-        <div class="chat active">
-            <img src="https://pbs.twimg.com/profile_images/1532551445396037639/eoGesqdh_400x400.jpg" class="user-pfp" alt="pfp">
-            <div class="text">
-                <div class="name-container">
-                    <p>Paco Coursey</p>
-                    <p class="last">1d</p>
-                </div>
-                <span>Hi Paco!</span>
-            </div>
-        </div>
+        {#await getDocs(chats_query)}
+            <placeholder style="width: 100%; height: 64px; margin-bottom: 4px;"/>
+        {:then chats}
+            {#each chats.docs as chat, i}
+                {#await getDocs(query(users, where("tag", "==", chat.data().between[1])))}
+                    <placeholder style="width: 100%; height: 64px; margin-bottom: 4px;"/>
+                {:then user}
+                    <div class="chat" class:active={opponentI == i} on:click={() => {
+                        opponentI = i; 
+                        current_opponent = user.docs[0].data();
+                        current_chat = chat.data().messages;
+                    }}
+                    on:keydown={() => {/* to get a11y to shut up */}}>
+                        <img src="{user.docs[0].data().avatar}" class="user-pfp" alt="pfp">
+                        <div class="text">
+                            <div class="name-container">
+                                <p>{user.docs[0].data().username}</p>
+                                <p class="last">1d</p>
+                            </div>
+                            <span>{chat.data().messages[chat.data().messages.length - 1].content[chat.data().messages[chat.data().messages.length - 1].content.length - 1]}</span>
+                        </div>
+                    </div>
+                {/await}
+            {/each}
+        {/await}
     </div>
     <div class="messages">
-        <Messages></Messages>
+        <Messages bind:current_opponent={current_opponent} bind:current_chat={current_chat}></Messages>
         <div class="send-reply-container-container">
             <div class="send-reply-container">
                 <input type="text" placeholder="Say Hi!">
@@ -49,31 +67,46 @@
 {#if expand}
     <Blanket bind:toggle={expand} style="height: calc(100vh - 50px) !important; top: 50px !important;">
         <div class="sidebar-mobile" transition:fade={{ duration: 100 }}>
-            <div class="chat">
-                <img src="https://pbs.twimg.com/profile_images/1532551445396037639/eoGesqdh_400x400.jpg" class="user-pfp" alt="pfp">
-                <div class="text">
-                    <div class="name-container">
-                        <p>Paco Coursey</p>
-                        <p class="last">1d</p>
-                    </div>
-                    <span>Hi Paco!</span>
-                </div>
-            </div>
-            <div class="chat active">
-                <img src="https://pbs.twimg.com/profile_images/1532551445396037639/eoGesqdh_400x400.jpg" class="user-pfp" alt="pfp">
-                <div class="text">
-                    <div class="name-container">
-                        <p>Paco Coursey</p>
-                        <p class="last">1d</p>
-                    </div>
-                    <span>Hi Paco!</span>
-                </div>
-            </div>
+            {#await getDocs(chats_query)}
+                <placeholder style="width: 100%; height: 64px; margin-bottom: 4px;"/>
+            {:then chats}
+                {#each chats.docs as chat, i}
+                    {#await getDocs(query(users, where("tag", "==", chat.data().between[1])))}
+                        <placeholder style="width: 100%; height: 64px; margin-bottom: 4px;"/>
+                    {:then user}
+                        <div class="chat" class:active={opponentI == i} on:click={() => {
+                            opponentI = i; 
+                            current_opponent = user.docs[0].data();
+                            current_chat = chat.data().messages;
+                            expand = false;
+                        }}
+                        on:keydown={() => {/* to get a11y to shut up */}}>
+                            <img src="{user.docs[0].data().avatar}" class="user-pfp" alt="pfp">
+                            <div class="text">
+                                <div class="name-container">
+                                    <p>{user.docs[0].data().username}</p>
+                                    <p class="last">1d</p>
+                                </div>
+                                <span>{chat.data().messages[chat.data().messages.length - 1].content[chat.data().messages[chat.data().messages.length - 1].content.length - 1]}</span>
+                            </div>
+                        </div>
+                    {/await}
+                {/each}
+            {/await}
         </div>
     </Blanket>
 {/if}
 
 <style>
+    placeholder {
+        width: 480px;
+        border-radius: 6px;
+        height: 84px;
+        background-image: linear-gradient(270deg, var(--hsl-light), var(--hsl-dark), var(--hsl-light), var(--hsl-dark));
+        background-size: 400% 100%;
+        animation: loading 4s ease-in-out infinite;
+    }
+
     main {
         width: 100vw;
         height: calc(100vh - 50px);
@@ -96,7 +129,7 @@
         width: 550px;
     }
     
-    @media only screen and (max-width: 820px) {
+    @media only screen and (max-width: 900px) {
         div.messages {
             width: 80vw;
         }
@@ -107,6 +140,10 @@
         }
         
         div.chat {
+            display: none !important;
+        }
+
+        div.sidebar > placeholder {
             display: none !important;
         }
 

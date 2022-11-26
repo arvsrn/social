@@ -159,6 +159,8 @@
 
         color: var(--d5);
         transition: color 0.1s ease-in;
+
+        margin-top: 8px;
     }
 
     input {

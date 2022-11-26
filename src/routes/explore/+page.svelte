@@ -1,17 +1,14 @@
 <script lang="ts">
     import Newpost from "../Newpost.svelte";
-    import Signup from "../Popover/Signup.svelte";
     import Post from "../Post.svelte";
 
-    import { doc, getDocs, getDoc, getFirestore, collection } from "firebase/firestore";
-    import { app } from "../../server";
+    import { doc, getDocs, getDoc, collection, query, where } from "firebase/firestore";
+    import { db } from "../../server";
     import Loader from "../Loader.svelte";
     import { state } from '../../app';
 
     let active: 'for-you' | 'following' = 'for-you';
     let newpost: boolean = false;
-
-    const db = getFirestore(app);
 </script>
 
 <main>
@@ -31,23 +28,16 @@
     {#await getDocs(collection(db, "posts/"))}
         <Loader></Loader>
     {:then posts}
-        {#each posts.docs as user}
-            {#each user.data().posts as post_}
-                {#await getDoc(doc(db, `users/${user.id}`))}
-
+        {#each posts.docs as post}
+                {#await getDocs(query(collection(db, "users"), where("tag", "==", post.data().by)))}
                 {:then user}
-                    {#if user.exists()}
-                        <Post user={{
-                            username: user.data().username,
-                            handle: user.data().handle,
-                            about: user.data().about,
-                            avatar: user.data().avatar,
-                        }} content="{post_.content}"></Post>
-                    {:else}
-                        Error
-                    {/if}
+                    <Post user={{
+                        username: user.docs[0].data().username,
+                        handle: user.docs[0].data().tag,
+                        about: user.docs[0].data().about,
+                        avatar: user.docs[0].data().avatar,
+                    }} content="{post.data().content}"></Post>
                 {/await}
-            {/each}
         {/each}
     {/await}
 </main>

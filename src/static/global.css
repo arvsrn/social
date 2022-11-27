@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+    --blue: #52A9FF;
+    --red: #E54D2E;
+    --orange: #FF8B3E;
+}
+
+.dark {
+    --light: white;
+    --dark: #282828;
+    --darker: #222;
+    --darkest: #1c1c1c;
+    --d01: rgba(255, 255, 255, 0.01);
+    --d04: rgba(255, 255, 255, 0.04);
+    --d05: rgba(255, 255, 255, 0.05);
+    --d08: rgba(255, 255, 255, 0.08);
+    --d1: rgba(255, 255, 255, 0.1);
+    --d2: rgba(255, 255, 255, 0.2);
+    --d35: rgba(255, 255, 255, 0.35);
+    --d5: rgba(255, 255, 255, 0.5);
+    --d6: rgba(255, 255, 255, 0.6);
+    --d8: rgba(255, 255, 255, 0.8);
+    --d9: rgba(255, 255, 255, 0.9);
+    --hsl-light: hsl(109, 0%, 16%);
+    --hsl-dark: hsl(109, 0%, 20%);
+}
+
+.light {
+    --light: black;
+    --dark: #e5e5e5;
+    --darker: #eeee;
+    --darkest: #fefefe;
+    --d01: rgba(0, 0, 0, 0.01);
+    --d04: rgba(0, 0, 0, 0.04);
+    --d05: rgba(0, 0, 0, 0.05);
+    --d08: rgba(0, 0, 0, 0.08);
+    --d1: rgba(0, 0, 0, 0.1);
+    --d2: rgba(0, 0, 0, 0.2);
+    --d35: rgba(0, 0, 0, 0.35);
+    --d5: rgba(0, 0, 0, 0.5);
+    --d6: rgba(0, 0, 0, 0.6);
+    --d8: rgba(0, 0, 0, 0.8);
+    --d9: rgba(0, 0, 0, 0.9);
+    --hsl-light: hsl(109, 0%, 84%);
+    --hsl-dark: hsl(109, 0%, 80%);
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+
+    background-color: var(--darker);
+
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+
+    display: flex;
+    flex-direction: column;
+}
+
+button {
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+a {
+    text-decoration: none;
+}
+
+::selection {
+    background-color: var(--d08);
+}

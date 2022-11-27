@@ -18,7 +18,7 @@
 
         {#if hover}
             <div transition:fade={{ duration: 100 }} on:mouseenter={() => hover = true} on:mouseleave={() => hover = false}>
-                <img src="{user.avatar}" alt="">
+                <img draggable={false} src="{user.avatar}" alt="">
                 <p class="name-hvr">{user.username}</p>
                 <p class="tag">@{user.handle}</p>
                 <p class="about">{user.about}</p>
@@ -197,7 +197,7 @@
 
     @media only screen and (max-width: 500px) {
         main {
-            width: 90vw;
+            width: 86vw;
         }
     }
 </style>

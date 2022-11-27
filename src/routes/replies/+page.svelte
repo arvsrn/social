@@ -46,7 +46,7 @@
                             current_chat = chat.data().messages;
                         }}
                         on:keydown={() => {/* to get a11y to shut up */}}>
-                            <img src="{user.docs[0].data().avatar}" class="user-pfp" alt="pfp">
+                            <img draggable={false} src="{user.docs[0].data().avatar}" class="user-pfp" alt="pfp">
                             <div class="text">
                                 <div class="name-container">
                                     <p>{user.docs[0].data().username}</p>
@@ -94,7 +94,7 @@
                             expand = false;
                         }}
                         on:keydown={() => {/* to get a11y to shut up */}}>
-                            <img src="{user.docs[0].data().avatar}" class="user-pfp" alt="pfp">
+                            <img draggable={false} src="{user.docs[0].data().avatar}" class="user-pfp" alt="pfp">
                             <div class="text">
                                 <div class="name-container">
                                     <p>{user.docs[0].data().username}</p>

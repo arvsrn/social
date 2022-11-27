@@ -12,7 +12,7 @@
 
     {#each users as user, i}
         <div class="profile-container" class:active={selected == i}>
-            <img src="{user.avatar}" alt="">
+            <img draggable={false} src="{user.avatar}" alt="">
             <p class="name">{user.name}</p>
             <p class="tag">@{user.tag}</p>
         </div>
@@ -41,6 +41,21 @@
         flex-direction: column;
         gap: 4px;
         padding: 12px;
+
+        animation: enter;
+        animation-duration: 0.2s;
+    }
+
+    @keyframes enter {
+        from {
+            transform: translateY(20px);
+            opacity: 0%;
+        }
+
+        to {
+            transform: translateY(0px);
+            opacity: 100%;
+        }
     }
 
     input {

@@ -6,11 +6,16 @@
     import { page } from '$app/stores';
     import { onMount } from "svelte";
     import { validate_component } from "svelte/internal";
+    import Blanket from "./Blanket.svelte";
+    import Settings from "./Popover/Settings.svelte";
+    import AccountSettings from "./Popover/AccountSettings.svelte";
     
     let xTransform: number = 20;
     let width: number = 52;
     let hidden: boolean = true;
     let showMenu: boolean = false;
+    let showSettings: boolean = false;
+    let showAccountSettings: boolean = false;
 
     export let logIn: boolean = false;
     
@@ -34,14 +39,15 @@
 <main>
     <div class="img-container">
         {#if $state.user}
-            <img src="{$state.user.avatar}" alt="" on:click={() => showMenu = true}>
+            <img draggable={false} src="{$state.user.avatar}" alt="" on:click={() => showMenu = true}>
         {:else}
             <button class="login" on:click={() => logIn = true}>Log in</button>
         {/if}
 
         {#if showMenu && $state.user}
             <div class="menu" use:clickOutside={() => showMenu = false} transition:fade={{ duration: 80 }}>
-                <button>Profile</button>
+                <button on:click={() => window.location.assign('/me')}>Profile</button>
+                <button on:click={() => {showSettings = true; showMenu = false;}}>Settings</button>
                 <button class="red" on:click={() => state.update(val => {
                     showMenu = false;
                     return { darkmode: val.darkmode, user: false }
@@ -57,17 +63,19 @@
     </div>
     
     <div aria-hidden={hidden} class="floating-highlight" style="transform: translate({xTransform}px, 10px); width: {width}px;"></div>
-
-    <button style="margin-left: auto; margin-right: 11px;" on:click={() => state.update(val => {
-        return { user: val.user, darkmode: !val.darkmode };
-    })}>
-        {#if $state.darkmode}
-            <svg viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" width="15" height="15"><path d="M7.5 1.5v-1m0 13.99v-.998m6-5.997h1m-13 0h-1m2-4.996l-1-1m12 0l-1 1m-10 9.993l-1 1m12 0l-1-1m-2-4.997a2.999 2.999 0 01-3 2.998 2.999 2.999 0 113-2.998z" stroke="currentColor" stroke-linecap="square"></path></svg>
-        {:else}
-            <svg viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" width="15" height="15"><path d="M1.66 11.362A6.5 6.5 0 007.693.502a7 7 0 11-6.031 10.86z" stroke="currentColor" stroke-linejoin="round"></path></svg>
-        {/if}
-    </button>
 </main>
+
+{#if showSettings}
+    <Blanket bind:toggle={showSettings}>
+        <Settings bind:show={showSettings} bind:showAccountSettings={showAccountSettings}></Settings>
+    </Blanket>
+{/if}
+
+{#if showAccountSettings}
+    <Blanket bind:toggle={showAccountSettings}>
+        <AccountSettings></AccountSettings>
+    </Blanket>
+{/if}
 
 <style>
     main {

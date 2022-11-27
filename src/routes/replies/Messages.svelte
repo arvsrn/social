@@ -13,13 +13,13 @@
     {#if $state.user && current_opponent}
         {#each current_chat as message}
             <main>
-                <img style="cursor: pointer;" src="{message.by !== $state.user ? current_opponent.avatar : $state.user.avatar}" alt=""
+                <img draggable={false} style="cursor: pointer;" src="{message.by !== $state.user ? current_opponent.avatar : $state.user.avatar}" alt=""
                     on:mouseenter={() => hover = true} on:mouseleave={() => hover = false}>
 
                 <!--
                     {#if hover}
                         <div class="hover" transition:fade={{ duration: 100 }} on:mouseenter={() => hover = true} on:mouseleave={() => hover = false}>
-                            <img src="{message.by !== $state.user ? current_opponent.avatar : $state.user.avatar}" alt="">
+                            <img draggable={false} src="{message.by !== $state.user ? current_opponent.avatar : $state.user.avatar}" alt="">
                             <p class="name-hvr">{message.by !== $state.user ? current_opponent.username : $state.user.username}</p>
                             <p class="tag">@{message.by !== $state.user ? current_opponent.tag : $state.user.handle}</p>
                             <p class="about">{message.by !== $state.user ? current_opponent.about : $state.user.about}</p>

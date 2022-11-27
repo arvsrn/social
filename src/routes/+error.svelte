@@ -108,7 +108,7 @@
 
     @media only screen and (max-width: 500px) {
         div {
-            width: 90vw;
+            width: 86vw;
         }
     } 
 </style>

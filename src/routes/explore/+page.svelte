@@ -146,7 +146,7 @@
 
     @media only screen and (max-width: 500px) {
         div.controls {
-            width: 90vw;
+            width: 86vw;
         }
     }
 </style>

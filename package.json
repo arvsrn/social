@@ -12,6 +12,7 @@
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "next",
 		"@sveltejs/kit": "next",
+		"@types/uuid": "^8.3.4",
 		"svelte": "^3.44.0",
 		"svelte-check": "^2.7.1",
 		"svelte-preprocess": "^4.10.6",
@@ -24,6 +25,7 @@
 		"firebase": "^9.14.0",
 		"svelte-device-detector": "^0.2.2",
 		"svelte-local-storage-store": "^0.3.1",
-		"svelte-use-click-outside": "^1.0.0"
+		"svelte-use-click-outside": "^1.0.0",
+		"uuid": "^9.0.0"
 	}
 }
